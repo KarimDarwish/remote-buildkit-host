@@ -24,7 +24,3 @@ write_files:
 
 runcmd:
  - sudo ./opt/buildkit/bin/buildkitd --addr tcp://0.0.0.0:8082 --tlscacert /etc/buildkit/tlsca.crt --tlscert /etc/buildkit/tls.pem --tlskey /etc/buildkit/tls.key
-
-
-#!/bin/bash -e
-  sudo ./opt/buildkit/bin/buildkitd --addr tcp://0.0.0.0:8082

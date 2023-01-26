@@ -102,6 +102,22 @@ resource "aws_security_group" "default" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
+  #Internal Ping - used for VPN
+  egress {
+    from_port         = -1
+    to_port           = -1
+    protocol          = "icmp"
+    self = true
+  }
+
+  #Internal Ping - used for VPN
+  ingress {
+    from_port = -1
+    protocol  = "icmp"
+    to_port   = -1
+    self = true
+  }
+
   #Buildkit Internal Ingress
   ingress {
     from_port         = 8082
