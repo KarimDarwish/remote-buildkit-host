@@ -1,0 +1,30 @@
+#cloud-config
+package_update: false
+package_upgrade: false
+
+write_files:
+  - content: |
+      ${base64encode("${tlscacert}")}
+    encoding: b64
+    owner: root:root
+    path: /etc/buildkit/tlsca.crt
+    permissions: '0750'
+  - content: |
+      ${base64encode("${tlscert}")}
+    encoding: b64
+    owner: root:root
+    path: /etc/buildkit/tls.pem
+    permissions: '0750'
+  - content: |
+      ${base64encode("${tlskey}")}
+    encoding: b64
+    owner: root:root
+    path: /etc/buildkit/tls.key
+    permissions: '0750'
+
+runcmd:
+ - sudo ./opt/buildkit/bin/buildkitd --addr tcp://0.0.0.0:8082 --tlscacert /etc/buildkit/tlsca.crt --tlscert /etc/buildkit/tls.pem --tlskey /etc/buildkit/tls.key
+
+
+#!/bin/bash -e
+  sudo ./opt/buildkit/bin/buildkitd --addr tcp://0.0.0.0:8082

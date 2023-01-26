@@ -1,0 +1,1 @@
+variable "subnet_availability_zone" { type = string }
