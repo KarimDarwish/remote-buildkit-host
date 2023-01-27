@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    github = {
+      source = "integrations/github"
+      version = "5.16.0"
+    }
+  }
+}
+
 resource "github_actions_secret" "openvpn_config" {
   repository       = var.repository
   secret_name      = "BUILDKIT_OPENVPN_CONFIG"
