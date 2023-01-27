@@ -125,3 +125,4 @@ terraform.rc
 *.iml
 .certs
 .idea
+certificates/generated
