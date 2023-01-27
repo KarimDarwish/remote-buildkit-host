@@ -58,7 +58,7 @@ module "buildkit-host-001" {
 }
 
 module "github-config" {
-  source = "./modules/github-secrets"
+  source = "modules/github-config"
 
   repository = "payment-gateway"
   vpn_config = module.vpn.openvpn_config
