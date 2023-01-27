@@ -25,3 +25,6 @@ variable "buildkit_vpc_cidr_block"{
 variable "buildkit_vpc_id"{
   type = string
 }
+
+variable "client_tls_cert" {type = string}
+variable "client_tls_key" {type = string}

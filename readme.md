@@ -1,12 +1,12 @@
 # Remote Buildkit Host on EC2
 
-# Installation
+## Installation
 
-## Packer
+### Packer
 
 - Build the AMI using Packer by running ```packer build``` in the ``images/buildkit/amd64`` folder
 
-## Certificates
+### Certificates
 
 Pre-requisites:
 - [mkcert](https://github.com/FiloSottile/mkcert) -> make sure to have it installed and available in your PATH
@@ -27,7 +27,7 @@ This will create the following folders under `/generated`:
 You can store those certificates in the secret management tool of your choice.
 
 
-## Terraform
+### Terraform
 
 This project provides 3 Terraform modules:
 

@@ -1,3 +1,13 @@
+locals {
+  vpn_endpoint = replace(aws_ec2_client_vpn_endpoint.buildkit.dns_name, "*", "random-string")
+  ovpn_config = templatefile("${path.module}/templates/configuration.ovpn", {
+    vpn_endpoint = local.vpn_endpoint
+    ca = var.cert_chain
+    cert = var.client_tls_cert
+    cert_key = var.client_tls_key
+  })
+}
+
 resource "aws_acm_certificate" "server" {
   private_key = var.server_key
   certificate_body = var.server_cert
@@ -56,4 +66,12 @@ resource "aws_ec2_client_vpn_authorization_rule" "internal" {
   authorize_all_groups   = true
 }
 
-
+resource "local_file" "local" {
+  filename = "./test.ovpn"
+  content = templatefile("${path.module}/templates/configuration.ovpn", {
+    vpn_endpoint = local.vpn_endpoint
+    ca = var.cert_chain
+    cert = var.client_tls_cert
+    cert_key = var.client_tls_key
+  })
+}
