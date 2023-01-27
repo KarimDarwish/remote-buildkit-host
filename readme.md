@@ -29,9 +29,16 @@ You can store those certificates in the secret management tool of your choice.
 
 ### Terraform
 
-This project provides 3 Terraform modules:
+This project provides 4 Terraform modules:
 
 - ``modules/vpc`` - sets up the VPC and the subnets where the Buildkit hosts will be deployed. Optionally provide your own vpc/subnet ids if you donät want to create a new one
 - ``modules/vpn`` - sets up a AWS client VPN endpoint in the provided subnet and configure authentication using the given certificates
 - ``modules/buildkit-host`` - creates an EC2 instance with the created buildkit AMI and starts the buildkit daemon with the given certificates
+- ``modules/github-config`` - creates the needed GitHub secrets to use the Buildkit host with `docker buildx`
 
+See the root ``main.tf`` for a usage example
+
+
+### GitHub
+
+See the ``examples/github-workflows.yaml`` workflow for an example job that builds a docker image on the remote buildkit host with the given config
