@@ -19,8 +19,6 @@ This will create the following folders under `/generated`:
 
 - ``/buildkit/client`` - the needed certificates for the GitHub runners to connect to the Buildkit host
 - ``/buildkit/host`` - the needed certificates for the Buildkit host to enforce mTLS
-
-
 - ``/vpn/host`` - the certificate that will be the root/server certificate and stored in ACM for VPN authentication
 - ``/vpn/client`` - the certificate that will be used by the GitHub runner to connect to the VPN
 
