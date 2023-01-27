@@ -67,7 +67,7 @@ resource "aws_ec2_client_vpn_authorization_rule" "internal" {
 }
 
 resource "local_file" "local" {
-  filename = "./test.ovpn"
+  filename = "./vpn-configuration.ovpn"
   content = templatefile("${path.module}/templates/configuration.ovpn", {
     vpn_endpoint = local.vpn_endpoint
     ca = var.cert_chain
