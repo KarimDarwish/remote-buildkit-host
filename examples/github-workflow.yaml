@@ -9,27 +9,19 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
-      - name: Install OpenVPN
-        run: |
-          sudo apt-get update
-          sudo apt-get --assume-yes --no-install-recommends install openvpn          
 
-      - name: Setup VPN config
-        run: |
-          mkdir tmp
-          echo "${{ secrets.BUILDKIT_OPENVPN_CONFIG }}" > ./tmp/config.ovpn
-          echo "${{ secrets.BUILDKIT_CLIENT_CA_CERT }}" > ./tmp/ca.pem
-          echo "${{ secrets.BUILDKIT_CLIENT_CERT }}" > ./tmp/cert.pem
-          echo "${{ secrets.BUILDKIT_CLIENT_KEY }}" > ./tmp/key.pem
+      - id: configure-buildkit
+        uses: KarimDarwish/remote-buikdkit-action@v1
+        with:
+          openvpn-config: ${{ secrets.BUILDKIT_OPENVPN_CONFIG }}
+          buildkit-ca-cert: ${{ secrets.BUILDKIT_CLIENT_CA_CERT }}
+          buildkit-cert: ${{ secrets.BUILDKIT_CLIENT_CERT }}
+          buildkit-cert-key: ${{ secrets.BUILDKIT_CLIENT_KEY }}
+          buildkit-ip: ${{ secrets.BUILDKIT_HOST_IP }}
+          builder-name: remote-buildkit-host
 
-      - name: Connect VPN
-        run: sudo openvpn --config "./tmp/config.ovpn" --daemon
-
-      - name: Wait for a VPN connection
-        run: until nc -vzw 2 ${{ secrets.BUILDKIT_HOST_IP }} 8082; do sleep 1; done
-
-      - name: Setup
-        run: docker buildx create --name remote-buildkit-host --driver-opt cacert=${PWD}/tmp/ca.pem,cert=${PWD}/tmp/cert.pem,key=${PWD}/tmp/key.pem,servername=127.0.0.1 --driver remote tcp://${{ secrets.BUILDKIT_HOST_IP }}:8082
+      - name: List buildx
+        run: docker buildx ls
 
       - name: Build and push
         uses: docker/build-push-action@v3
@@ -37,7 +29,7 @@ jobs:
           context: .
           push: false
           builder: remote-buildkit-host
-          tags: app:latest
+          tags: test:pr-42
 
       - name: Kill VPN connection
         if: always()
